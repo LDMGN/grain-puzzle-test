@@ -49,6 +49,9 @@ public class WeightsCandidate implements EACandidate {
 
     int[][] getAllPermutations() {
         Set<List<Integer>> permutations = new HashSet<>();
+
+        //Remove one, fill up with others
+
         int[][] result = new int[permutations.size()][];
         int i = 0;
         for (List<Integer> permutation : permutations) {
@@ -58,12 +61,24 @@ public class WeightsCandidate implements EACandidate {
         return result;
     }
 
-    int[] getArrayMinus(final int[] array, final int pos) {
+    Set<List<Integer>> fillUpWith(final int listLength, final int[] pool, final List<Integer> currentList) {
+        if (currentList.size() == listLength) {
+            return currentList;
+        }
+        for (int i = 0; i < pool.length; i++) {
+            int given = pool[i];
+            currentList.add(given);
+            int[] remainder = getArrayMinus(pool, i);
+        }
+        return fillUpWith(listLength, remainder, currentList);
+    }
+
+    int[] getArrayMinus(final int[] array, final int index) {
         int[] result = new int[array.length - 1];
         for (int i = 0; i < array.length; i++) {
-            if (i < pos) {
+            if (i < index) {
                 result[i] = array[i];
-            } else if (i > pos) {
+            } else if (i > index) {
                 result[i - 1] = array[i];
             }
         }
